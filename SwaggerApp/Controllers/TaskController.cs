@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Task = Swagger.Models.Task;
 
@@ -9,54 +8,46 @@ namespace SwaggerApp.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private ApplicationContext _context;
+        private DbService _dbService;
 
         public TaskController(ApplicationContext context)
         {
-            _context = context;
+            _dbService = new DbService(context);
         }
 
         [HttpGet]
         public IEnumerable<Task> Get()
         {
-            return _context.Tasks.ToList();
+            var tasks = _dbService.GetTasks();
+            return tasks;
         }
 
 
         [HttpGet("{id}")]
         public Task Get(int id)
         {
-            return _context.Tasks.ToList().Find(e => e.Id == id);
+            var task = _dbService.GetTask(id);
+            return task;
         }
 
         [HttpPost]
         [Produces("application/json")]
         public Task Post([FromBody] Task task)
         {
-            _context.Tasks.Add(task);
-            _context.SaveChanges();
+            _dbService.AddTask(task);
             return task;
         }
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Task task)
         {
-            var changedTask = _context.Tasks.FirstOrDefault(x => x.Id == id);
-            if (changedTask != null)
-            {
-                changedTask.Id = task.Id;
-                changedTask.User = task.User;
-                changedTask.TaskDescription = task.TaskDescription;
-                _context.SaveChanges();
-            }
+            _dbService.UpdateTask(id, task);
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
-            _context.Tasks.Remove(task);
-            _context.SaveChanges();
+            _dbService.DeleteTask(id);
         }
 
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Swagger.Models;
 
@@ -10,60 +8,46 @@ namespace SwaggerApp.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ApplicationContext _context;
+        private readonly DbService _dbService;
 
         public UsersController(ApplicationContext context)
         {
-            _context = context;
+            _dbService = new DbService(context);
         }
 
         [HttpGet]
         [Route("api/users/get")]
         public IEnumerable<User> Get()
         {
-            return _context.Users.ToList();
+            var users = _dbService.GetUsers();
+            return users;
         }
 
         [HttpGet("{id}")]
         public User Get(int id)
         {
-            return _context.Users.ToList().Find(e => e.Id == id);
+            var user = _dbService.GetUser(id);
+            return user;
         }
 
         [HttpPost]
         [Produces("application/json")]
         public User Post([FromBody] User user)
         {
-            User newUser = new User();
-            newUser.Name = user.Name;
-            newUser.Age = user.Age;
-            newUser.SurName = user.SurName;
-            newUser.Office = user.Office;
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return newUser;
+            _dbService.AddUser(user);
+            return user;
         }
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] User user)
         {
-            var changedUser = _context.Users.FirstOrDefault(x => x.Id == id);
-            if (changedUser != null)
-            {
-                changedUser.Name = user.Name;
-                changedUser.Age = user.Age;
-                changedUser.SurName = user.SurName;
-                changedUser.Office = user.Office;
-                _context.SaveChanges();
-            }
-
+            _dbService.UpdateUser(id, user);
+        
         }
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == id);
-            _context.Users.Remove(user);
-            _context.SaveChanges();
+            _dbService.DeleteUser(id);
         }
     }
 }

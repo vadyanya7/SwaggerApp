@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using SwaggerApp.Models;
 
 namespace Swagger.Models
 {
-    public class Office
+    public class Office : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-        public int UserId { get; set; }
         public User User { get; set; }
     }
 }

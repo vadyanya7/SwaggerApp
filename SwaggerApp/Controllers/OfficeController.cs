@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Swagger.Models;
 
@@ -9,55 +8,46 @@ namespace SwaggerApp.Controllers
     [ApiController]
     public class OfficeController : ControllerBase
     {
-        private ApplicationContext _context;
+        private DbService _dbService;
 
         public OfficeController(ApplicationContext context)
         {
-            _context = context;
+            _dbService = new DbService(context);
         }
-        [HttpGet]
 
+        [HttpGet]
         public IEnumerable<Office> Get()
         {
-            return _context.Office.ToList();
+            var offices = _dbService.GetOffices();
+            return offices;
         }
 
 
         [HttpGet("{id}")]
         public Office Get(int id)
         {
-            return _context.Office.ToList().Find(e => e.Id == id);
+            var office = _dbService.GetOffice(id);
+            return office;
         }
 
         [HttpPost]
         [Produces("application/json")]
         public Office Post([FromBody] Office office)
         {
-            _context.Office.Add(office);
-            _context.SaveChanges();
+            _dbService.AddOffice(office);
             return office;
         }
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Office office)
         {
-            var changedOffice = _context.Office.FirstOrDefault(x => x.Id == id);
-            if (changedOffice != null)
-            {
-                changedOffice.Id = office.Id;
-                changedOffice.Name = office.Name;
-                changedOffice.User = office.User;
-                changedOffice.UserId = office.UserId;
-                _context.SaveChanges();
-            }
+            _dbService.UpdateOffice(id,office);
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var office = _context.Office.FirstOrDefault(x => x.Id == id);
-            _context.Office.Remove(office);
-            _context.SaveChanges();
+            _dbService.DeleteOffice(id);       
         }
 
     }

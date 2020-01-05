@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using SwaggerApp.Models;
 
 namespace Swagger.Models
 {
-    public class Task
-    {
-        public int Id { get; set; }
-        public int UserId { get; set; }
+    public class Task : BaseEntity
+    {       
         public string TaskDescription { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
     }
 }
