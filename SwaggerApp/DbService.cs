@@ -13,7 +13,7 @@ namespace SwaggerApp
 
         public DbService(ApplicationContext context)
         {
-           _users = new Repository<User>(context);
+            _users = new Repository<User>(context);
             _offices = new Repository<Office>(context);
             _tasks = new Repository<Task>(context);
         }

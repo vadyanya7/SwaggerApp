@@ -22,9 +22,12 @@ namespace SwaggerApp.Repositories
 
         public void Delete(int id)
         {
-            var item = Entities.FirstOrDefault(x=>x.Id == id);
-            Entities.Remove(item);
-            _context.SaveChanges();
+            var item = Entities.FirstOrDefault(x => x.Id == id);
+            if (item != null)
+            {
+                Entities.Remove(item);
+                _context.SaveChanges();
+            }
         }
 
         public T Get(int id)
