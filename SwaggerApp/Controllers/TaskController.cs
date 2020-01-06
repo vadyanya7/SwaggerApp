@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using SwaggerApp.Services;
 using Task = Swagger.Models.Task;
 
 namespace SwaggerApp.Controllers
@@ -8,17 +9,17 @@ namespace SwaggerApp.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private DbService _dbService;
+        private ITaskService _taskService;
 
-        public TaskController(ApplicationContext context)
+        public TaskController(TaskService service)
         {
-            _dbService = new DbService(context);
+            _taskService = service;
         }
 
         [HttpGet]
         public IEnumerable<Task> Get()
         {
-            var tasks = _dbService.GetTasks();
+            var tasks = _taskService.GetTasks();
             return tasks;
         }
 
@@ -26,7 +27,7 @@ namespace SwaggerApp.Controllers
         [HttpGet("{id}")]
         public Task Get(int id)
         {
-            var task = _dbService.GetTask(id);
+            var task = _taskService.GetTask(id);
             return task;
         }
 
@@ -34,20 +35,20 @@ namespace SwaggerApp.Controllers
         [Produces("application/json")]
         public Task Post([FromBody] Task task)
         {
-            _dbService.AddTask(task);
+            _taskService.AddTask(task);
             return task;
         }
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Task task)
         {
-            _dbService.UpdateTask(id, task);
+            _taskService.UpdateTask(id, task);
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _dbService.DeleteTask(id);
+            _taskService.DeleteTask(id);
         }
 
     }

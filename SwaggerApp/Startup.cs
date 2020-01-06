@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SwaggerApp.Repositories;
+using SwaggerApp.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SwaggerApp
@@ -28,7 +30,14 @@ namespace SwaggerApp
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(connection));   
+                options.UseSqlServer(connection));
+            services.AddScoped<OfficeService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<TaskService>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IOfficeService),typeof(OfficeService));
+            services.AddScoped(typeof(IUserService), typeof(UserService));
+            services.AddScoped(typeof(ITaskService), typeof(TaskService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

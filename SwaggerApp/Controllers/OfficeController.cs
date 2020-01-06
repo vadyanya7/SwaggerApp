@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Swagger.Models;
+using SwaggerApp.Services;
 
 namespace SwaggerApp.Controllers
 {
@@ -8,17 +9,17 @@ namespace SwaggerApp.Controllers
     [ApiController]
     public class OfficeController : ControllerBase
     {
-        private DbService _dbService;
+        private IOfficeService _officeService;
 
-        public OfficeController(ApplicationContext context)
+        public OfficeController(OfficeService service)
         {
-            _dbService = new DbService(context);
+            _officeService = service;
         }
 
         [HttpGet]
         public IEnumerable<Office> Get()
         {
-            var offices = _dbService.GetOffices();
+            var offices = _officeService.GetOffices();
             return offices;
         }
 
@@ -26,7 +27,7 @@ namespace SwaggerApp.Controllers
         [HttpGet("{id}")]
         public Office Get(int id)
         {
-            var office = _dbService.GetOffice(id);
+            var office = _officeService.GetOffice(id);
             return office;
         }
 
@@ -34,20 +35,20 @@ namespace SwaggerApp.Controllers
         [Produces("application/json")]
         public Office Post([FromBody] Office office)
         {
-            _dbService.AddOffice(office);
+            _officeService.AddOffice(office);
             return office;
         }
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Office office)
         {
-            _dbService.UpdateOffice(id,office);
+            _officeService.UpdateOffice(id,office);
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _dbService.DeleteOffice(id);       
+            _officeService.DeleteOffice(id);       
         }
 
     }

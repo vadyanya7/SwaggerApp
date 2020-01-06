@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwaggerApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace SwaggerApp.Repositories
 {
@@ -36,9 +38,9 @@ namespace SwaggerApp.Repositories
             return item;
         }
 
-        public List<T> GetAll()
+        public DbSet<T> GetAll()
         {
-            return Entities.ToList();
+            return Entities;
         }
 
         public void Update(int id, T entity)
@@ -49,6 +51,24 @@ namespace SwaggerApp.Repositories
                 _context.Entry(item).CurrentValues.SetValues(entity);
                 _context.SaveChanges();
             }
+        }
+
+        public T GetWithInclude(params Expression<Func<T, object>>[] includeProperties)
+        {
+            return Include(includeProperties).FirstOrDefault();
+        }
+
+        public T GetWithInclude(int id,
+            params Expression<Func<T, object>>[] includeProperties)
+        {
+            var query = Include(includeProperties);
+            return query.FirstOrDefault(x=>x.Id==id);
+        }
+        private IQueryable<T> Include(params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = Entities.AsNoTracking();
+            return includeProperties
+                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
     }
 }

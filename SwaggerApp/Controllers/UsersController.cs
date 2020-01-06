@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Swagger.Models;
+using SwaggerApp.Services;
 
 namespace SwaggerApp.Controllers
 {
@@ -8,25 +9,25 @@ namespace SwaggerApp.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly DbService _dbService;
+        private readonly IUserService _userService;
 
-        public UsersController(ApplicationContext context)
+        public UsersController(UserService service)
         {
-            _dbService = new DbService(context);
+            _userService = service;
         }
 
         [HttpGet]
         [Route("api/users/get")]
         public IEnumerable<User> Get()
         {
-            var users = _dbService.GetUsers();
+            var users = _userService.GetUsers();
             return users;
         }
 
         [HttpGet("{id}")]
         public User Get(int id)
         {
-            var user = _dbService.GetUser(id);
+            var user = _userService.GetUser(id);
             return user;
         }
 
@@ -34,20 +35,20 @@ namespace SwaggerApp.Controllers
         [Produces("application/json")]
         public User Post([FromBody] User user)
         {
-            _dbService.AddUser(user);
+            _userService.AddUser(user);
             return user;
         }
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] User user)
         {
-            _dbService.UpdateUser(id, user);
+            _userService.UpdateUser(id, user);
         
         }
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _dbService.DeleteUser(id);
+            _userService.DeleteUser(id);
         }
     }
 }
