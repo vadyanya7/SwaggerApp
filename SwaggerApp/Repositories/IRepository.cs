@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwaggerApp.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace SwaggerApp.Repositories
@@ -13,9 +12,6 @@ namespace SwaggerApp.Repositories
         void Add(T entity);
         void Update(int id, T entity);
         void Delete(int id);
-        T GetWithInclude(int id,
-            params Expression<Func<T, object>>[] includeProperties);
-        T GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
-
+        T GetWithInclude(int id, params Expression<Func<T, object>>[] includeProperties);
     }
 }

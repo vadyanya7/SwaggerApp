@@ -11,7 +11,7 @@ namespace SwaggerApp
            Database.EnsureCreated();   // создаем базу данных при первом обращении
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<Swagger.Models.Task> Tasks { get; set; }
+        public DbSet<Task> Tasks { get; set; }
         public DbSet<Office> Office { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -20,10 +20,12 @@ namespace SwaggerApp
                 .HasOne(a => a.User)
                 .WithOne(b => b.Office)
                 .HasForeignKey<User>(b => b.OfficeId);
+
             modelBuilder.Entity<User>()
-                .HasMany<Task>(c => c.Tasks)
-                .WithOne(e => e.User)
-                .HasForeignKey(b=>b.UserId);
+                .HasMany(a => a.Tasks)
+                .WithOne(x => x.User);
+
+
         }
     }
 }

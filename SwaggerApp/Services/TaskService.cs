@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SwaggerApp.Repositories;
 using Task = Swagger.Models.Task;
 
@@ -25,12 +26,12 @@ namespace SwaggerApp.Services
 
         public Task GetTask(int id)
         {
-            return _tasks.GetWithInclude(id, p => p.User);
+            return _tasks.GetWithInclude(id, p => p.User, o=>o.User.Office);
         }
 
         public List<Task> GetTasks()
         {
-            return _tasks.GetAll().ToList();
+            return _tasks.GetAll().Include(x=>x.User).ThenInclude(c=>c.Office).ToList();
         }
 
         public void UpdateTask(int id, Task task)

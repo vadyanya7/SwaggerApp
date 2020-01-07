@@ -3,9 +3,8 @@ using Swagger.Models;
 
 namespace SwaggerApp.Services
 {
-    interface IUserService
+    public interface IUserService
     {
-
         List<User> GetUsers();
         User GetUser(int id);
         void AddUser(User user);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SwaggerApp.Services
 {
-    interface IOfficeService
+    public interface IOfficeService
     {
         List<Office> GetOffices();
         Office GetOffice(int id);

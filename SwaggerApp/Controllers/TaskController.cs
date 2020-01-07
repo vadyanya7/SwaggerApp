@@ -11,7 +11,7 @@ namespace SwaggerApp.Controllers
     {
         private ITaskService _taskService;
 
-        public TaskController(TaskService service)
+        public TaskController(ITaskService service)
         {
             _taskService = service;
         }

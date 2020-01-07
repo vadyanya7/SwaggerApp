@@ -11,7 +11,7 @@ namespace SwaggerApp.Controllers
     {
         private IOfficeService _officeService;
 
-        public OfficeController(OfficeService service)
+        public OfficeController(IOfficeService service)
         {
             _officeService = service;
         }

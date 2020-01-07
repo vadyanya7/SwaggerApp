@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Swagger.Models;
 using SwaggerApp.Repositories;
-
 namespace SwaggerApp.Services
 {
     public class OfficeService : IOfficeService
@@ -26,13 +25,13 @@ namespace SwaggerApp.Services
 
         public Office GetOffice(int id)
         {
-            return _offices.GetWithInclude(id, p => p.User);
+            return _offices.GetWithInclude(id, p => p.User, o => o.User.Tasks);
         }
 
         public List<Office> GetOffices()
-        {
+        {          
             return _offices.GetAll().Include(x => x.User)
-                   .ThenInclude(c => c.Tasks).ToList();
+                   .ThenInclude(c => c.Tasks).ToList(); 
         }
 
         public void UpdateOffice(int id, Office office)

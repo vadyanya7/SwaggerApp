@@ -3,7 +3,7 @@ using Task = Swagger.Models.Task;
 
 namespace SwaggerApp.Services
 {
-    interface ITaskService
+   public interface ITaskService
     {
         List<Task> GetTasks();
         Task GetTask(int id);

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwaggerApp.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -52,12 +51,6 @@ namespace SwaggerApp.Repositories
                 _context.SaveChanges();
             }
         }
-
-        public T GetWithInclude(params Expression<Func<T, object>>[] includeProperties)
-        {
-            return Include(includeProperties).FirstOrDefault();
-        }
-
         public T GetWithInclude(int id,
             params Expression<Func<T, object>>[] includeProperties)
         {

@@ -26,15 +26,13 @@ namespace SwaggerApp.Services
 
         public User GetUser(int id)
         {
-            var ss = _users.Get(id);
-            return ss;
+            return _users.GetWithInclude(id, p => p.Office, i => i.Tasks);
         }
 
         public List<User> GetUsers()
         {
-            var list = _users.GetAll().Include(c => c.Office)
-                      .Include(x => x.Tasks).ToList();
-
+            var list = _users.GetAll()
+                      .Include(x => x.Office).Include(x=>x.Tasks).ToList();
             return list;
         }
 

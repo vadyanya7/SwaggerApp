@@ -10,8 +10,7 @@ namespace SwaggerApp.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-
-        public UsersController(UserService service)
+        public UsersController(IUserService service)
         {
             _userService = service;
         }
@@ -42,8 +41,7 @@ namespace SwaggerApp.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] User user)
         {
-            _userService.UpdateUser(id, user);
-        
+            _userService.UpdateUser(id, user);       
         }
         [HttpDelete("{id}")]
         public void Delete(int id)

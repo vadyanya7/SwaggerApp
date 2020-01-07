@@ -8,13 +8,10 @@ namespace Swagger.Models
         public string Name { get; set; }
         public string SurName { get; set; }
         public  int Age { get; set; }
+       
         public int OfficeId { get; set; }
         public Office Office { get; set; }
-        public ICollection<Task> Tasks { get; set; }
+        public List<Task> Tasks { get; set; }
         
-        public User()
-        {
-            Tasks = new List<Task>();
-        }
     }
 }
