@@ -16,29 +16,35 @@ namespace SwaggerApp.Services
         }
         public void AddUser(User user)
         {
-            _users.Add(user);
+             string query = "INSERT INTO Users (Name, SurName,Age, OfficeId) VALUES(@Name, @SurNAme, @Age,@OfficeId)";
+            _users.Add(query,user);
         }
 
         public void DeleteUser(int id)
         {
-            _users.Delete(id);
+            string query = "DELETE FROM Users WHERE Id = @id";
+            _users.Delete(query, id);
         }
 
         public User GetUser(int id)
         {
-            return _users.GetWithInclude(id, p => p.Office, i => i.Tasks);
+            string query = "SELECT * FROM Users";
+            return _users.GetWithInclude(query, id, p => p.Office, i => i.Tasks);
         }
 
         public List<User> GetUsers()
         {
-            var list = _users.GetAll()
+            var list = _users.GetAll("SELECT * FROM Users")
                       .Include(x => x.Office).Include(x=>x.Tasks).ToList();
             return list;
         }
 
         public void UpdateUser(int id, User user)
         {
-            _users.Update(id, user);
+            string query = "UPDATE Users SET" +
+                    " Name = @Name, SurName = @SurName, Age = @Age, OfficeId = @OfficeID" +
+                    " WHERE Id = @Id"; 
+            _users.Update(query, id, user);
         }
     }
 }

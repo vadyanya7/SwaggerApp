@@ -16,27 +16,32 @@ namespace SwaggerApp.Services
         }
         public void AddTask(Task task)
         {
-            _tasks.Add(task);
+            string query = "INSERT INTO Tasks (TaskDescription, UserId) VALUES(@TaskDescription, @UserId)";
+            _tasks.Add(query, task);
         }
 
         public void DeleteTask(int id)
         {
-            _tasks.Delete(id);
+            string query = "DELETE FROM Tasks WHERE Id = @id";
+            _tasks.Delete(query,id);
         }
 
         public Task GetTask(int id)
         {
-            return _tasks.GetWithInclude(id, p => p.User, o=>o.User.Office);
+            string query = "Select * From Tasks";
+            return _tasks.GetWithInclude(query,id, p => p.User, o=>o.User.Office);
         }
 
         public List<Task> GetTasks()
         {
-            return _tasks.GetAll().Include(x=>x.User).ThenInclude(c=>c.Office).ToList();
+            return _tasks.GetAll("Select * From Tasks").Include(x=>x.User).ThenInclude(c=>c.Office).ToList();
         }
 
         public void UpdateTask(int id, Task task)
         {
-            _tasks.Update(id, task);
+            string query = "UPDATE Tasks SET" +
+                    "TaskDescription = @TaskDescription, UserId=@UserId WHERE Id = @Id";
+            _tasks.Update(query, id, task);
         }
     }
 }

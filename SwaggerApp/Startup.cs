@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swagger.Models;
 using SwaggerApp.Repositories;
 using SwaggerApp.Services;
 using Swashbuckle.AspNetCore.Swagger;
@@ -33,13 +34,12 @@ namespace SwaggerApp
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            // добавляем контекст MobileContext в качестве сервиса в приложение
-            services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(connection));
             services.AddScoped<OfficeService>();
             services.AddScoped<UserService>();
             services.AddScoped<TaskService>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddSingleton<IRepository<User>>(p => new Repository<User>(connection));
+            services.AddSingleton<IRepository<Office>>(p => new Repository<Office>(connection));
+            services.AddSingleton<IRepository<Task>>(p => new Repository<Task>(connection));
             services.AddScoped(typeof(IOfficeService),typeof(OfficeService));
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped(typeof(ITaskService), typeof(TaskService));

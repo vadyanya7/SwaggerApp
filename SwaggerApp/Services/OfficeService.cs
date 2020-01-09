@@ -15,28 +15,33 @@ namespace SwaggerApp.Services
         }
         public void AddOffice(Office office)
         {
-            _offices.Add(office);
+            string query = "INSERT INTO Office (Name) VALUES(@Name)";
+            _offices.Add(query,office);
         }
 
         public void DeleteOffice(int id)
         {
-            _offices.Delete(id);
+            string query = "DELETE FROM Office WHERE Id = @id";
+            _offices.Delete(query,id);
         }
 
         public Office GetOffice(int id)
         {
-            return _offices.GetWithInclude(id, p => p.User, o => o.User.Tasks);
+            string query = "Select * From Office";
+            return _offices.GetWithInclude(query, id, p => p.User, o => o.User.Tasks);
         }
 
         public List<Office> GetOffices()
         {          
-            return _offices.GetAll().Include(x => x.User)
+            return _offices.GetAll("SELECT * FROM Office").Include(x => x.User)
                    .ThenInclude(c => c.Tasks).ToList(); 
         }
 
         public void UpdateOffice(int id, Office office)
         {
-            _offices.Update(id, office);
+            string query = "UPDATE Office SET" +
+                    " Name = @Name WHERE Id = @Id";
+            _offices.Update(query,id, office);
         }
     }
 }
