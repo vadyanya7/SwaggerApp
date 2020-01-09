@@ -37,7 +37,7 @@ namespace SwaggerApp.Repositories
             return item;
         }
 
-        public DbSet<T> GetAll()
+        public IQueryable<T> GetAll()
         {
             return Entities;
         }

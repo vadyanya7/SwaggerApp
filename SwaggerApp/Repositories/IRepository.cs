@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwaggerApp.Models;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace SwaggerApp.Repositories
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        DbSet<T> GetAll();
+        IQueryable<T> GetAll();
         T Get(int id);
         void Add(T entity);
         void Update(int id, T entity);
