@@ -24,8 +24,6 @@ namespace SwaggerApp
             modelBuilder.Entity<User>()
                 .HasMany(a => a.Tasks)
                 .WithOne(x => x.User);
-
-
         }
     }
 }
