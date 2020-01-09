@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SwaggerApp.Models;
+﻿using SwaggerApp.Models;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
