@@ -36,15 +36,12 @@ namespace SwaggerApp
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
-            services.AddScoped<OfficeService>();
-            services.AddScoped<UserService>();
-            services.AddScoped<TaskService>();
             services.AddTransient<IRepoOffice, RepoOffice>();
             services.AddTransient<IRepoUser, RepoUser>();
             services.AddTransient<IRepoTask, RepoTask>();
-            services.AddScoped(typeof(IOfficeService),typeof(OfficeService));
-            services.AddScoped(typeof(IUserService), typeof(UserService));
-            services.AddScoped(typeof(ITaskService), typeof(TaskService));
+            services.AddTransient<IOfficeService,OfficeService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ITaskService, TaskService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
