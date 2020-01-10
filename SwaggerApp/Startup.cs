@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swagger.Models;
 using SwaggerApp.Repositories;
 using SwaggerApp.Services;
 using Swashbuckle.AspNetCore.Swagger;
@@ -37,12 +35,12 @@ namespace SwaggerApp
             services.AddScoped<OfficeService>();
             services.AddScoped<UserService>();
             services.AddScoped<TaskService>();
-            services.AddSingleton<IRepository<User>>(p => new Repository<User>(connection));
-            services.AddSingleton<IRepository<Office>>(p => new Repository<Office>(connection));
-            services.AddSingleton<IRepository<Task>>(p => new Repository<Task>(connection));
-            services.AddScoped(typeof(IOfficeService),typeof(OfficeService));
-            services.AddScoped(typeof(IUserService), typeof(UserService));
-            services.AddScoped(typeof(ITaskService), typeof(TaskService));
+            services.AddSingleton<IRepoOffice>(p => new RepoOffice(connection));
+            services.AddSingleton<IRepoUser>(p => new RepoUser(connection));
+            services.AddSingleton<IRepoTask>(p => new RepoTask(connection));
+            services.AddTransient<IOfficeService,OfficeService>();
+            services.AddTransient<IUserService,UserService>();
+            services.AddTransient<ITaskService,TaskService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

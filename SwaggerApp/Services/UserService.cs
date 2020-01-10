@@ -8,43 +8,38 @@ namespace SwaggerApp.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRepository<User> _users;
+        private readonly IRepoUser _users;
 
-        public UserService(IRepository<User> userRepository)
+        public UserService(IRepoUser userRepository)
         {
             _users = userRepository;
         }
         public void AddUser(User user)
         {
-             string query = "INSERT INTO Users (Name, SurName,Age, OfficeId) VALUES(@Name, @SurNAme, @Age,@OfficeId)";
-            _users.Add(query,user);
+            
+            _users.Add(user);
         }
 
         public void DeleteUser(int id)
-        {
-            string query = "DELETE FROM Users WHERE Id = @id";
-            _users.Delete(query, id);
+        {        
+            _users.Delete( id);
         }
 
         public User GetUser(int id)
         {
-            string query = "SELECT * FROM Users";
-            return _users.GetWithInclude(query, id, p => p.Office, i => i.Tasks);
+           return _users.Get( id);
         }
 
         public List<User> GetUsers()
         {
-            var list = _users.GetAll("SELECT * FROM Users")
-                      .Include(x => x.Office).Include(x=>x.Tasks).ToList();
+            var list = _users.GetAll()
+                      .ToList();
             return list;
         }
 
         public void UpdateUser(int id, User user)
-        {
-            string query = "UPDATE Users SET" +
-                    " Name = @Name, SurName = @SurName, Age = @Age, OfficeId = @OfficeID" +
-                    " WHERE Id = @Id"; 
-            _users.Update(query, id, user);
+        {          
+            _users.Update(id, user);
         }
     }
 }
