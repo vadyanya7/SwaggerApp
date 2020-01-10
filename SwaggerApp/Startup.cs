@@ -39,7 +39,9 @@ namespace SwaggerApp
             services.AddScoped<OfficeService>();
             services.AddScoped<UserService>();
             services.AddScoped<TaskService>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IRepoOffice, RepoOffice>();
+            services.AddTransient<IRepoUser, RepoUser>();
+            services.AddTransient<IRepoTask, RepoTask>();
             services.AddScoped(typeof(IOfficeService),typeof(OfficeService));
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped(typeof(ITaskService), typeof(TaskService));

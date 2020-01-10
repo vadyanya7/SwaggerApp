@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Swagger.Models;
 using SwaggerApp.Repositories;
 namespace SwaggerApp.Services
 {
     public class OfficeService : IOfficeService
     {
-        private readonly IRepository<Office> _offices;
+        private readonly IRepoOffice _offices;
 
-        public OfficeService(IRepository<Office> officeRepository)
+        public OfficeService(IRepoOffice officeRepository)
         {
             _offices = officeRepository;
         }
@@ -25,13 +24,12 @@ namespace SwaggerApp.Services
 
         public Office GetOffice(int id)
         {
-            return _offices.GetWithInclude(id, p => p.User, o => o.User.Tasks);
+            return _offices.Get(id);
         }
 
         public List<Office> GetOffices()
         {          
-            return _offices.GetAll().Include(x => x.User)
-                   .ThenInclude(c => c.Tasks).ToList(); 
+            return _offices.GetAll().ToList(); 
         }
 
         public void UpdateOffice(int id, Office office)
