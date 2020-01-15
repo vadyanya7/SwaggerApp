@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swagger.Models;
 using SwaggerApp.Services;
@@ -17,6 +18,8 @@ namespace SwaggerApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        [Route("getlogin")]
         public IEnumerable<Office> Get()
         {
             var offices = _officeService.GetOffices();
