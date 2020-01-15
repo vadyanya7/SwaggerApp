@@ -39,7 +39,7 @@
             // отправляет запрос и получаем ответ
             const response = await fetch("/token", {
                 method: "POST",
-                headers: {"Accept": "application/json"},
+                headers: { "Accept": "application/json" },
                 body: formData
             });
             // получаем данные
@@ -55,7 +55,7 @@
                 // сохраняем в хранилище sessionStorage токен доступа
                 sessionStorage.setItem(tokenKey, data.access_token);
                 console.log(data.access_token);
-             }
+            }
             else {
                 // если произошла ошибка, из errorText получаем текст ошибки
                 console.log("Error: ", response.status, data.errorText);
@@ -83,7 +83,7 @@
 
         // получаем токен
         document.getElementById("submitLogin").addEventListener("click", e => {
-
+            debugger;
             e.preventDefault();
             getTokenAsync();
         });

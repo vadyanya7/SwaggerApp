@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using SwaggerApp.Models;
+using SwaggerApp;
+// класс Person
 
-namespace SwaggerApp.Controllers
+namespace TokenApp.Controllers
 {
-
-    [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
+        // тестовые данные вместо использования базы данных
         private List<Account> people = new List<Account>
         {
             new Account {Login="admin@gmail.com", Password="12345", Role = "admin" },
@@ -47,7 +46,7 @@ namespace SwaggerApp.Controllers
                 username = identity.Name
             };
 
-            return Ok(response);
+            return Json(response);
         }
 
         private ClaimsIdentity GetIdentity(string username, string password)
