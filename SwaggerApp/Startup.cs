@@ -84,7 +84,7 @@ namespace SwaggerApp
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+
 
 
             app.UseCors(x => x
@@ -106,7 +106,8 @@ namespace SwaggerApp
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseAuthentication();          
+            app.UseAuthentication();
+            app.UseMvc();
         }
     }
 }

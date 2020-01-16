@@ -83,7 +83,6 @@
 
         // получаем токен
         document.getElementById("submitLogin").addEventListener("click", e => {
-            debugger;
             e.preventDefault();
             getTokenAsync();
         });
@@ -101,7 +100,6 @@
 
         // кнопка получения имя пользователя  - /api/values/getlogin
         document.getElementById("getDataByLogin").addEventListener("click", e => {
-            debugger;
             e.preventDefault();
             getData("/api/values/getlogin");
         });
