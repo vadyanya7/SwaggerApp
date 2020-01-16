@@ -16,7 +16,6 @@ namespace SwaggerApp.Controllers
         }
 
         [HttpGet]
-        [Route("api/users/get")]
         public IEnumerable<User> Get()
         {
             var users = _userService.GetUsers();
