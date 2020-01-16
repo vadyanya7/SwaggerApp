@@ -29,11 +29,7 @@ namespace SwaggerApp
             {
                 opt.SerializerSettings.ReferenceLoopHandling =
                 Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-            });
+            });       
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<ApplicationContext>(options =>
@@ -44,6 +40,7 @@ namespace SwaggerApp
             services.AddTransient<IOfficeService,OfficeService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITaskService, TaskService>();
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
@@ -68,7 +65,12 @@ namespace SwaggerApp
                             // валидация ключа безопасности
                             ValidateIssuerSigningKey = true,
             };
-          });           
+          });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,14 +94,7 @@ namespace SwaggerApp
                .AllowAnyMethod()
                .AllowAnyHeader());
 
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+           
 
             app.UseDeveloperExceptionPage();
 
@@ -108,6 +103,14 @@ namespace SwaggerApp
 
             app.UseAuthentication();
             app.UseMvc();
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
         }
     }
 }

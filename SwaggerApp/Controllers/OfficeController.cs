@@ -18,8 +18,6 @@ namespace SwaggerApp.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        [Route("getlogin")]
         public IEnumerable<Office> Get()
         {
             var offices = _officeService.GetOffices();
