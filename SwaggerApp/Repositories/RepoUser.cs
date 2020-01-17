@@ -17,14 +17,12 @@ namespace SwaggerApp.Repositories
         public void Add(User entity)
         {
             Entities.Add(entity);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var item = Entities.FirstOrDefault(x => x.Id == id);
             Entities.Remove(item);
-            _context.SaveChanges();
         }
 
         public User Get(int id)
@@ -43,8 +41,11 @@ namespace SwaggerApp.Repositories
             if (item != null)
             {
                 _context.Entry(item).CurrentValues.SetValues(entity);
-                _context.SaveChanges();
             }
+        }
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
         }
     }
 }

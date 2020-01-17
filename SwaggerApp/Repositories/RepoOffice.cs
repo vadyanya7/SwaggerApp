@@ -16,7 +16,6 @@ namespace SwaggerApp.Repositories
         public void Add(Office entity)
         {
             Entities.Add(entity);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -25,7 +24,6 @@ namespace SwaggerApp.Repositories
             if (item != null)
             {
                 Entities.Remove(item);
-                _context.SaveChanges();
             }
         }
 
@@ -48,8 +46,11 @@ namespace SwaggerApp.Repositories
             if (item != null)
             {
                 _context.Entry(item).CurrentValues.SetValues(entity);
-                _context.SaveChanges();
             }
+        }
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
         }
     }
 }

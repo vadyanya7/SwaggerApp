@@ -6,6 +6,7 @@ using SwaggerApp.Services;
 
 namespace SwaggerApp.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OfficeController : ControllerBase
@@ -16,7 +17,7 @@ namespace SwaggerApp.Controllers
         {
             _officeService = service;
         }
-
+       
         [HttpGet]
         public IEnumerable<Office> Get()
         {

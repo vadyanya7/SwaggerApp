@@ -16,11 +16,13 @@ namespace SwaggerApp.Services
         public void AddUser(User user)
         {
             _users.Add(user);
+            _users.SaveChanges();
         }
 
         public void DeleteUser(int id)
         {
             _users.Delete(id);
+            _users.SaveChanges();
         }
 
         public User GetUser(int id)
@@ -37,6 +39,7 @@ namespace SwaggerApp.Services
         public void UpdateUser(int id, User user)
         {
             _users.Update(id, user);
+            _users.SaveChanges();
         }
     }
 }

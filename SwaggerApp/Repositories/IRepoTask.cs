@@ -11,6 +11,7 @@ namespace SwaggerApp.Repositories
         Task Get(int id);
         void Add(Task entity);
         void Update(int id, Task entity);
-        void Delete(int id);      
+        void Delete(int id);
+        void SaveChanges();
     }
 }

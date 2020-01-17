@@ -15,11 +15,13 @@ namespace SwaggerApp.Services
         public void AddOffice(Office office)
         {
             _offices.Add(office);
+            _offices.SaveChanges();
         }
 
         public void DeleteOffice(int id)
         {
             _offices.Delete(id);
+            _offices.SaveChanges();
         }
 
         public Office GetOffice(int id)
@@ -35,6 +37,7 @@ namespace SwaggerApp.Services
         public void UpdateOffice(int id, Office office)
         {
             _offices.Update(id, office);
+            _offices.SaveChanges();
         }
     }
 }

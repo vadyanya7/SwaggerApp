@@ -37,10 +37,10 @@ namespace SwaggerApp
             services.AddTransient<IRepoOffice, RepoOffice>();
             services.AddTransient<IRepoUser, RepoUser>();
             services.AddTransient<IRepoTask, RepoTask>();
-            services.AddTransient<IOfficeService,OfficeService>();
+            services.AddTransient<IOfficeService, OfficeService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITaskService, TaskService>();
-
+            services.AddTransient<IAuthenticateService, AuthenticateService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
@@ -52,7 +52,6 @@ namespace SwaggerApp
                             ValidateIssuer = true,
                             // строка, представляющая издателя
                             ValidIssuer = AuthOptions.ISSUER,
-
                             // будет ли валидироваться потребитель токена
                             ValidateAudience = true,
                             // установка потребителя токена
@@ -70,6 +69,7 @@ namespace SwaggerApp
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.OperationFilter<MyHeaderFilter>();
             });
         }
 
@@ -87,22 +87,17 @@ namespace SwaggerApp
 
             app.UseHttpsRedirection();
 
-
-
             app.UseCors(x => x
                .AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowAnyHeader());
 
-           
-
-            app.UseDeveloperExceptionPage();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseAuthentication();
-            app.UseMvc();
+            
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
@@ -111,6 +106,7 @@ namespace SwaggerApp
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+            app.UseMvc();
         }
     }
 }

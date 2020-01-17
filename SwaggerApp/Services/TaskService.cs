@@ -16,11 +16,13 @@ namespace SwaggerApp.Services
         public void AddTask(Task task)
         {
             _tasks.Add(task);
+            _tasks.SaveChanges();
         }
 
         public void DeleteTask(int id)
         {
             _tasks.Delete(id);
+            _tasks.SaveChanges();
         }
 
         public Task GetTask(int id)
@@ -36,6 +38,7 @@ namespace SwaggerApp.Services
         public void UpdateTask(int id, Task task)
         {
             _tasks.Update(id, task);
+            _tasks.SaveChanges();
         }
     }
 }

@@ -20,7 +20,6 @@ namespace SwaggerApp.Repositories
         public void Add(Swagger.Models.Task entity)
         {
             Entities.Add(entity);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -29,7 +28,6 @@ namespace SwaggerApp.Repositories
             if (item != null)
             {
                 Entities.Remove(item);
-                _context.SaveChanges();
             }
         }
 
@@ -53,6 +51,10 @@ namespace SwaggerApp.Repositories
             {
                 _context.Entry(item).CurrentValues.SetValues(entity);
             }
+        }
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
         }
     }
 }

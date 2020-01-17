@@ -12,5 +12,6 @@ namespace SwaggerApp.Repositories
         void Add(Office entity);
         void Update(int id, Office entity);
         void Delete(int id);
+        void SaveChanges();
     }
 }

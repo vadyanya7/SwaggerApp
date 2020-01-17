@@ -12,5 +12,6 @@ namespace SwaggerApp.Repositories
         void Add(User entity);
         void Update(int id, User entity);
         void Delete(int id);
+        void SaveChanges();
     }
 }
