@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SwaggerApp.Models;
 using SwaggerApp.Repositories;
 using SwaggerApp.Services;
 using Swashbuckle.AspNetCore.Swagger;
@@ -34,6 +36,8 @@ namespace SwaggerApp
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
+            services.AddIdentity<Account, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>()
+                     .AddDefaultTokenProviders();
             services.AddTransient<IRepoOffice, RepoOffice>();
             services.AddTransient<IRepoUser, RepoUser>();
             services.AddTransient<IRepoTask, RepoTask>();

@@ -17,7 +17,7 @@
         <input type="password" id="passwordLogin" /><br /><br />
         <input type="submit" id="submitLogin" value="Логин" />
     </div>
-  
+
 
     <script>
         var tokenKey = "accessToken";
@@ -70,13 +70,13 @@
         });
 
         document.getElementById("submitLogin").addEventListener("click", e => {
- 
+            debugger;
             e.preventDefault();
             getTokenAsync();
         });
 
-        // кнопка получения имя пользователя  - /api/values/getlogin
-       
+            // кнопка получения имя пользователя  - /api/values/getlogin
+
     </script>
 </body>
 </html>

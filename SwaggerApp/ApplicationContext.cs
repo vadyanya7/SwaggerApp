@@ -1,19 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Swagger.Models;
+using SwaggerApp.Models;
 
 namespace SwaggerApp
 {
-    public class ApplicationContext: DbContext
+    public class ApplicationContext: IdentityDbContext<Account>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
               : base(options)
         {
            Database.EnsureCreated();   // создаем базу данных при первом обращении
         }
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> Users1 { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Office> Office { get; set; }
-
+        
+        public DbSet<Account> Accounts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Office>()
@@ -25,7 +28,9 @@ namespace SwaggerApp
                 .HasMany(a => a.Tasks)
                 .WithOne(x => x.User);
 
+            modelBuilder.Entity<Account>();
 
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
