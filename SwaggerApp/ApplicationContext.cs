@@ -5,18 +5,16 @@ using SwaggerApp.Models;
 
 namespace SwaggerApp
 {
-    public class ApplicationContext: IdentityDbContext<Account>
+    public class ApplicationContext: IdentityDbContext<User>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
               : base(options)
         {
            Database.EnsureCreated();   // создаем базу данных при первом обращении
         }
-        public DbSet<User> Users1 { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Office> Office { get; set; }
-        
-        public DbSet<Account> Accounts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Office>()
@@ -27,8 +25,6 @@ namespace SwaggerApp
             modelBuilder.Entity<User>()
                 .HasMany(a => a.Tasks)
                 .WithOne(x => x.User);
-
-            modelBuilder.Entity<Account>();
 
             base.OnModelCreating(modelBuilder);
         }

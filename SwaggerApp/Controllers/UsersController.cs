@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swagger.Models;
 using SwaggerApp.Services;
+using SwaggerApp.Models;
+using SwaggerApp;
+using Microsoft.AspNetCore.Identity;
 
 namespace SwaggerApp.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : Controller
     {
         private readonly IUserService _userService;
         public UsersController(IUserService service)
@@ -17,6 +20,19 @@ namespace SwaggerApp.Controllers
             _userService = service;
         }
 
+
+        [HttpPost("/token")]
+        public IActionResult Token([FromBody] User model)
+        {
+            var identity = _userService.GetIdentity(model);
+            if (identity == null)
+            {
+                return BadRequest(new { errorText = "Invalid username or password." });
+            }
+            var response = _userService.Token(identity);
+
+            return Json(response);
+        }
         [HttpGet]
         public IEnumerable<User> Get()
         {
@@ -24,30 +40,30 @@ namespace SwaggerApp.Controllers
             return users;
         }
 
-        [HttpGet("{id}")]
-        public User Get(int id)
+        [HttpGet("{userName}")]
+        public User Get(string userName)
         {
-            var user = _userService.GetUser(id);
+            var user = _userService.GetUser(userName);
             return user;
         }
 
         [HttpPost]
-        [Produces("application/json")]
-        public User Post([FromBody] User user)
+        public Task<User> Post([FromBody] User user)
         {
-            _userService.AddUser(user);
-            return user;
+           var sd = _userService.AddUser(user);
+            return sd;
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] User user)
+        [HttpPut("{userName}")]
+        public Task<User> Put(string userName, [FromBody] User user)
         {
-            _userService.UpdateUser(id, user);       
+            var sr = _userService.UpdateUser(userName, user);
+            return sr;
         }
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{userName}")]
+        public void Delete(string userName)
         {
-            _userService.DeleteUser(id);
+            _userService.DeleteUser(userName);
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swagger.Models;
 using SwaggerApp.Models;
 using SwaggerApp.Repositories;
 using SwaggerApp.Services;
@@ -36,7 +37,7 @@ namespace SwaggerApp
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
-            services.AddIdentity<Account, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>()
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>()
                      .AddDefaultTokenProviders();
             services.AddTransient<IRepoOffice, RepoOffice>();
             services.AddTransient<IRepoUser, RepoUser>();
@@ -44,7 +45,7 @@ namespace SwaggerApp
             services.AddTransient<IOfficeService, OfficeService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITaskService, TaskService>();
-            services.AddTransient<IAuthenticateService, AuthenticateService>();
+         //   services.AddTransient<IAuthenticateService, AuthenticateService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>

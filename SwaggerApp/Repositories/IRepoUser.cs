@@ -8,10 +8,10 @@ namespace SwaggerApp.Repositories
     public interface IRepoUser
     {
         IQueryable<User> GetAll();
-        User Get(int id);
+        User Get(string id);
         void Add(User entity);
-        void Update(int id, User entity);
-        void Delete(int id);
+        void Update(string id, User entity);
+        void Delete(string id);
         void SaveChanges();
     }
 }

@@ -19,23 +19,23 @@ namespace SwaggerApp.Repositories
             Entities.Add(entity);
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             var item = Entities.FirstOrDefault(x => x.Id == id);
             Entities.Remove(item);
         }
 
-        public User Get(int id)
+        public User Get(string id)
         {
-            return Entities.Include(u => u.Office).Include(u => u.Tasks).FirstOrDefault(x=>x.Id==id);
+            return null;// Entities.Include(u => u.Office).Include(u => u.Tasks).FirstOrDefault(x=>x.Id==id);
         }
 
         public IQueryable<User> GetAll()
         {
-           return Entities.Include(u=>u.Office).Include(u=>u.Tasks);
+            return null;// Entities.Include(u=>u.Office).Include(u=>u.Tasks);
         }
 
-        public void Update(int id, User entity)
+        public void Update(string id, User entity)
         {
             var item = Entities.FirstOrDefault(x => x.Id == id);
             if (item != null)
