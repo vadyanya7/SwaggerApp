@@ -21,10 +21,26 @@ namespace SwaggerApp.Services
             _users = userRepository;
             _userManager = userManager; 
         }
-
+        public async Task<ClaimsIdentity> GetIdentity(string userName, string password)
+        {
+            var person = await _userManager.FindByNameAsync(userName);
+                          
+            if (await _userManager.CheckPasswordAsync(person, password))
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.UserName),
+                };
+                var claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+            // если пользователя не найдено
+            return null;
+        }
         public ResponseModel Token(ClaimsIdentity identity)
         {
-
             var now = DateTime.UtcNow;
             // создаем JWT-токен
             var jwt = new JwtSecurityToken(
@@ -35,7 +51,6 @@ namespace SwaggerApp.Services
                     expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
             return new ResponseModel
             {
                 Access_token = encodedJwt,
@@ -43,71 +58,37 @@ namespace SwaggerApp.Services
             };
 
         }
-        public ClaimsIdentity GetIdentity(User model)
+        public async Task<IdentityResult> AddUser(User user, string password)
         {
-            User person = _userManager.Users.FirstOrDefault(x=>x.UserName==model.UserName);
-            if (person != null)
-            {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Name),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Password)
-                };
-                ClaimsIdentity claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
-                return claimsIdentity;
-            }
-
-            // если пользователя не найдено
-            return null;
-        }
-        public async Task<User> AddUser(User user)
-        {
-   
-           
             var result2 = await  _userManager.CreateAsync(user, user.Password);
-            //var result = await _userManager.CreateAsync(user);
-            //var result23 =  _userManager.CreateAsync(user);
-            //var result223 = _userManager.CreateAsync(user, user.PasswordHash);
-            // var sdf =  result2.Succeeded ? user : null;
-
-            //_users.Add(user);
-            //_users.SaveChanges();
-            return user;
+            return result2;
         }
 
-        public void DeleteUser(string userName)
+        public async Task<IdentityResult> DeleteUser(string userName)
         {
-            var account = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
-            if (account != null)
-            {
-                _userManager.DeleteAsync(account);
-            }
-
-            //_users.Delete(id);
-            //_users.SaveChanges();
+           var account = await _userManager.FindByNameAsync(userName);
+           return await _userManager.DeleteAsync(account);
         }
 
-        public User GetUser(string userName)
+        public async Task<User> GetUser(string userName)
         {
-            return _userManager.Users.FirstOrDefault(x => x.UserName == userName) ?? null;
-          //  return _users.Get(id);
+            return await _userManager.FindByNameAsync(userName);
         }
 
         public List<User> GetUsers()
         {
-            var list = _userManager.Users.ToList();
+            var list = _users.GetAll().ToList();
             return list;
         }
 
-        public async Task<User> UpdateUser(string userName, User user)
+        public async Task<IdentityResult> UpdateUser(string userName, User user)
         {
-            var sa= await  _userManager.UpdateAsync(user);
-                         
-            return user;
-            //_users.Update(userName, user);
-            //_users.SaveChanges();
+            var item = await _userManager.FindByNameAsync(userName);
+            if (item != null)
+            {
+               return await _userManager.UpdateAsync(user);
+            }         
+            return null;
         }
     }
 }

@@ -7,6 +7,14 @@ using SwaggerApp.Services;
 using SwaggerApp.Models;
 using SwaggerApp;
 using Microsoft.AspNetCore.Identity;
+using AutoMapper;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using SwaggerApp.Models.ViewModels;
 
 namespace SwaggerApp.Controllers
 {
@@ -15,16 +23,18 @@ namespace SwaggerApp.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService service)
+        private readonly IMapper _mapper;
+        public UsersController(IUserService service , IMapper mapper)
         {
             _userService = service;
+            _mapper = mapper;
         }
 
 
         [HttpPost("/token")]
-        public IActionResult Token([FromBody] User model)
+        public async Task<IActionResult> Token(string userName,string password)
         {
-            var identity = _userService.GetIdentity(model);
+            var identity = await _userService.GetIdentity(userName,password);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
@@ -34,36 +44,45 @@ namespace SwaggerApp.Controllers
             return Json(response);
         }
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<UserModel> Get()
         {
+            var listModel = new List<UserModel>();
             var users = _userService.GetUsers();
-            return users;
+            foreach (var l in users)
+            {
+                listModel.Add(_mapper.Map<User, UserModel>(l));
+            }
+
+            return listModel;
         }
 
         [HttpGet("{userName}")]
-        public User Get(string userName)
+        public async Task<UserModel> Get(string userName)
         {
-            var user = _userService.GetUser(userName);
-            return user;
+            var user = await  _userService.GetUser(userName);
+            var df = _mapper.Map<User, UserModel>(user);
+            return df;
         }
 
         [HttpPost]
-        public Task<User> Post([FromBody] User user)
+        public UserModel Post([FromBody] UserModel userModel,string password)
         {
-           var sd = _userService.AddUser(user);
-            return sd;
+            var user = _mapper.Map<UserModel, User>(userModel);
+            var sd = _userService.AddUser(user, password);
+            return userModel;
         }
 
         [HttpPut("{userName}")]
-        public Task<User> Put(string userName, [FromBody] User user)
+        public UpdateUserModel Put(string userName, [FromBody] UpdateUserModel userModel)
         {
+            var user = _mapper.Map<UpdateUserModel, User>(userModel);
             var sr = _userService.UpdateUser(userName, user);
-            return sr;
+            return userModel;
         }
         [HttpDelete("{userName}")]
-        public void Delete(string userName)
+        public Task<IdentityResult> Delete(string userName)
         {
-            _userService.DeleteUser(userName);
+           return _userService.DeleteUser(userName);
         }
     }
 }
