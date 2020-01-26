@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Swagger.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -24,13 +25,13 @@ namespace SwaggerApp.Repositories
             Entities.Add(entity);           
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
             var item = Entities.FirstOrDefault(x => x.Id == id);
             Entities.Remove(item);
         }
 
-        public User Get(string id)
+        public User Get(int id)
         {
             return Entities.Include(u => u.Office).Include(u => u.Tasks).FirstOrDefault(x=>x.Id==id);
         }
@@ -40,7 +41,7 @@ namespace SwaggerApp.Repositories
             return Entities.Include(u=>u.Office).Include(u=>u.Tasks);
         }
 
-        public void Update(string id, User entity)
+        public void Update(int id, User entity)
         {
             var item = Entities.FirstOrDefault(x => x.Id == id);
             if (item != null)
@@ -55,7 +56,7 @@ namespace SwaggerApp.Repositories
 
         public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.Id);
+            return Task.FromResult(user.Id.ToString());
         }
 
         public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)
@@ -72,10 +73,7 @@ namespace SwaggerApp.Repositories
         {
             return Task.FromResult(user.NormalizedUserName);
         }
-        public async Task<List<User>> GetUsersAsync()
-        {
-            return await _context.Users.ToListAsync();
-        }
+
         public Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)
         {
             return Task.Run(() => { user.NormalizedUserName = normalizedName; });
@@ -110,7 +108,7 @@ namespace SwaggerApp.Repositories
         {
             return Task<User>.Run(() =>
             {
-              return Get(userId);
+              return Get(Convert.ToInt32(userId));
             });
         }
 

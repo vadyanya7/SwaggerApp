@@ -34,16 +34,9 @@ namespace SwaggerApp
             services.AddTransient<IUserStore<User>, RepoUser>();
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
-            services.AddIdentity<User, IdentityRole>(
-               option =>
-               {
-                 option.Password.RequireDigit = false;
-                 option.Password.RequiredLength = 6;
-                 option.Password.RequireNonAlphanumeric = false;
-                 option.Password.RequireUppercase = false;
-                 option.Password.RequireLowercase = false;
-               }).AddEntityFrameworkStores<ApplicationContext>()
-                 .AddDefaultTokenProviders();
+            services.AddIdentity<User, IdentityRole<int>>()
+             .AddEntityFrameworkStores<ApplicationContext>()
+             .AddDefaultTokenProviders();
 
             services.AddTransient<IRepoOffice, RepoOffice>();
             services.AddTransient<IRepoUser, RepoUser>();

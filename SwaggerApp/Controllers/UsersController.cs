@@ -65,18 +65,18 @@ namespace SwaggerApp.Controllers
         }
 
         [HttpPost]
-        public UserModel Post([FromBody] UserModel userModel,string password)
+        public async Task<UserModel> Post([FromBody] UserModel userModel,string password)
         {
             var user = _mapper.Map<UserModel, User>(userModel);
-            var sd = _userService.AddUser(user, password);
+            var sd = await _userService.AddUser(user, password);
             return userModel;
         }
 
         [HttpPut("{userName}")]
-        public UpdateUserModel Put(string userName, [FromBody] UpdateUserModel userModel)
+        public async Task<UpdateUserModel> Put(string userName, [FromBody] UpdateUserModel userModel)
         {
             var user = _mapper.Map<UpdateUserModel, User>(userModel);
-            var sr = _userService.UpdateUser(userName, user);
+            var sr = await _userService.UpdateUser(userName, user);
             return userModel;
         }
         [HttpDelete("{userName}")]

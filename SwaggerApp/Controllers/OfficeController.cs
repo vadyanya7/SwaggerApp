@@ -8,7 +8,7 @@ using SwaggerApp.Services;
 
 namespace SwaggerApp.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OfficeController : ControllerBase
@@ -52,9 +52,9 @@ namespace SwaggerApp.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] OfficeModel officeModel)
+        public void Put(int id, [FromBody] UpdateOfficeModel officeModel)
         {
-            var office = _mapper.Map<OfficeModel, Office>(officeModel);
+            var office = _mapper.Map<UpdateOfficeModel, Office>(officeModel);
             _officeService.UpdateOffice(id,office);
         }
 

@@ -8,7 +8,7 @@ namespace SwaggerApp.Models.ViewModels
     public class UpdateTaskModel:BaseEntity
     {
         public string TaskDescription { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public UpdateUserModel User { get; set; }
     }
 }

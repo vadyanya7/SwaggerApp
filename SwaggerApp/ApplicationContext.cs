@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Swagger.Models;
 using SwaggerApp.Models;
 
 namespace SwaggerApp
 {
-    public class ApplicationContext: IdentityDbContext<User>
+    public class ApplicationContext: IdentityDbContext<User, IdentityRole<int>, int>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
               : base(options)

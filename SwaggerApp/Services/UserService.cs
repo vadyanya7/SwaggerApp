@@ -60,14 +60,18 @@ namespace SwaggerApp.Services
         }
         public async Task<IdentityResult> AddUser(User user, string password)
         {
-            var result2 = await  _userManager.CreateAsync(user, user.Password);
+            var result2 = await  _userManager.CreateAsync(user, password);
             return result2;
         }
 
         public async Task<IdentityResult> DeleteUser(string userName)
         {
            var account = await _userManager.FindByNameAsync(userName);
-           return await _userManager.DeleteAsync(account);
+            if (account != null)
+            {
+                return await _userManager.DeleteAsync(account);
+            }
+            return null;
         }
 
         public async Task<User> GetUser(string userName)
